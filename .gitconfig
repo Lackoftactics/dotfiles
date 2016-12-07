@@ -1,1 +1,7 @@
-.gitconfig
+[color]
+	ui = true
+[user]
+	name = Przemek Mroczek
+	email = p.mroczek@visuality.pl
+[editor]
+	editor = vim
