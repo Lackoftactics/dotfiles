@@ -207,8 +207,9 @@ return {
     ["Obsidian"] = ":obsidian:",
     ["Thunderbird"] = ":thunderbird:",
     ["Firefox"] = ":firefox:",
-    ["wezterm-gui"] = ":iterm:",
+    ["wezterm-gui"] = ":terminal:",
     ["Steam Helper"] = ":default:",
     ["Benji"] = ":bear:",
     ["default"] = ":default:"
 }
+  

@@ -26,14 +26,14 @@ for i, workspace in ipairs(workspaces) do
             string = i,
             padding_left = settings.items.padding.left,
             padding_right = settings.items.padding.left / 2,
-            color = settings.items.colors.unselected,
-            highlight_color = settings.items.colors.selected,
+            color = settings.items.default_color(i),
+            highlight_color = settings.items.highlight_color(i),
             highlight = selected
         },
         label = {
             padding_right = settings.items.padding.right,
-            color = settings.items.colors.unselected,
-            highlight_color = settings.items.colors.selected,
+            color = settings.items.default_color(i),
+            highlight_color = settings.items.highlight_color(i),
             font = settings.icons,
             y_offset = -1,
             highlight = selected
@@ -44,7 +44,7 @@ for i, workspace in ipairs(workspaces) do
             color = settings.items.colors.background,
             border_width = 1,
             height = settings.items.height,
-            border_color = selected and settings.items.colors.selected or settings.items.colors.unselected
+            border_color = selected and settings.items.highlight_color(i) or settings.items.default_color(i)
         },
         popup = {
             background = {
@@ -109,75 +109,11 @@ for i, workspace in ipairs(workspaces) do
                 highlight = selected
             },
             background = {
-                border_color = selected and settings.items.colors.selected or settings.items.colors.unselected
+                border_color = selected and settings.items.highlight_color(i) or settings.items.default_color(i)
             }
         })
 
-        if selected then
-            sbar.exec("aerospace list-windows --workspace " .. env.FOCUSED_WORKSPACE ..
-                          " --format '%{app-name}' --json ", function(apps)
-                local icon_line = ""
-                local no_app = true
-                for i, app in ipairs(apps) do
-                    no_app = false
-                    local app_name = app["app-name"]
-                    local lookup = app_icons[app_name]
-                    local icon = ((lookup == nil) and app_icons["default"] or lookup)
-                    icon_line = icon_line .. " " .. icon
-                end
-
-                if no_app then
-                    icon_line = " —"
-                end
-
-                sbar.animate("tanh", 10, function()
-                    space:set({
-                        label = icon_line
-                    })
-                end)
-            end)
-        end
     end)
-
-    space:subscribe("aerospace_focus_change", function()
-        if selected then
-            sbar.exec("aerospace list-windows --workspace " .. env.FOCUSED_WORKSPACE ..
-                          " --format '%{app-name}' --json ", function(apps)
-                local icon_line = ""
-                local no_app = true
-                for i, app in ipairs(apps) do
-                    no_app = false
-                    local app_name = app["app-name"]
-                    local lookup = app_icons[app_name]
-                    local icon = ((lookup == nil) and app_icons["default"] or lookup)
-                    icon_line = icon_line .. " " .. icon
-                end
-
-                if no_app then
-                    icon_line = " —"
-                end
- 
-                sbar.animate("tanh", 10, function()
-                    space:set({
-                        label = icon_line
-                    })
-                end)
-            end)
-        end
-    end)
-
-    -- space:subscribe("space_change", function(env)
-    --   local selected = env.SELECTED == "true"
-    --   local color = selected and colors.grey or colors.bg2
-    --   space:set({
-    --     icon = { highlight = selected, },
-    --     label = { highlight = selected },
-    --     background = { border_color = selected and colors.black or colors.bg2 }
-    --   })
-    --   space_bracket:set({
-    --     background = { border_color = selected and colors.grey or colors.bg2 }
-    --   })
-    -- end)
 
     space:subscribe("mouse.clicked", function(env)
         local SID = split(env.NAME, ".")[2]
@@ -236,8 +172,8 @@ local spaces_indicator = sbar.add("item", {
 
 -- Event handles
 space_window_observer:subscribe("space_windows_change", function(env)
-    sbar.exec("aerospace list-windows --workspace " .. env.INFO.space .. " --format '%{app-name}' --json ",
-        function(apps)
+    for i, workspace in ipairs(workspaces) do
+        sbar.exec("aerospace list-windows --workspace " .. i .. " --format '%{app-name}' --json ", function(apps)
             local icon_line = ""
             local no_app = true
             for i, app in ipairs(apps) do
@@ -253,78 +189,12 @@ space_window_observer:subscribe("space_windows_change", function(env)
             end
 
             sbar.animate("tanh", 10, function()
-                spaces[env.INFO.space]:set({
+                spaces[i]:set({
                     label = icon_line
                 })
             end)
         end)
-
-    -- local icon_line = ""
-    -- local no_app = true
-    -- for app, count in pairs(env.INFO.apps) do
-    --   no_app = false
-    --   local lookup = app_icons[app]
-    --   local icon = ((lookup == nil) and app_icons["default"] or lookup)
-    --   icon_line = icon_line .. " " .. icon
-    -- end
-
-    -- if (no_app) then
-    --   icon_line = " —"
-    -- end
-    -- sbar.animate("tanh", 10, function()
-    --   spaces[env.INFO.space]:set({ label = icon_line })
-    -- end)
-end)
-
--- space_window_observer:subscribe("aerospace_focus_change", function()
---     sbar.exec("aerospace list-windows --workspace focused --format '%{app-name}' --json ", function(apps)
---         local icon_line = ""
---         local no_app = true
---         for i, app in ipairs(apps) do
---             no_app = false
---             local app_name = app["app-name"]
---             local lookup = app_icons[app_name]
---             local icon = ((lookup == nil) and app_icons["default"] or lookup)
---             icon_line = icon_line .. " " .. icon
---         end
-
---         if no_app then
---             icon_line = " —"
---         end
-
---         sbar.animate("tanh", 10, function()
---             spaces[env.INFO.space]:set({
---                 label = icon_line
---             })
---         end)
---     end)
--- end)
-
-space_window_observer:subscribe("aerospace_workspace_change", function(env)
-    sbar.exec("aerospace list-windows --workspace " .. env.FOCUSED_WORKSPACE .. " --format '%{app-name}' --json ",
-        function(apps)
-            local icon_line = ""
-            local no_app = true
-            for i, app in ipairs(apps) do
-                no_app = false
-                local app_name = app["app-name"]
-                local lookup = app_icons[app_name]
-                local icon = ((lookup == nil) and app_icons["default"] or lookup)
-                icon_line = icon_line .. " " .. icon
-            end
-
-            if no_app then
-                icon_line = " —"
-            end
-
-            sbar.animate("tanh", 10, function()
-                if spaces[env.FOCUSED_WORKSPACE] then
-                    spaces[env.FOCUSED_WORKSPACE]:set({
-                        label = icon_line
-                    })
-                end
-            end)
-        end)
+    end
 end)
 
 spaces_indicator:subscribe("swap_menus_and_spaces", function(env)

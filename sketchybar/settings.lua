@@ -1,8 +1,19 @@
 local colors = require("colors")
+local icons = require("icons")
 
 return {
     paddings = 3,
     group_paddings = 5,
+    modes = {
+        main = {
+            icon = icons.rebel,
+            color = colors.rainbow[1]
+        },
+        service = {
+            icon = icons.nuke,
+            color = 0xffff9e64
+        }
+    },
     bar = {
         height = 36,
         padding = {
@@ -20,12 +31,16 @@ return {
             top = 0,
             bottom = 0
         },
+        default_color = function(workspace)
+            return colors.rainbow[workspace + 1]
+        end,
+        highlight_color = function(workspace)
+            return colors.yellow
+        end,
         colors = {
-            selected = colors.yellow,
-            unselected = colors.with_alpha(colors.white, 0.7),
             background = colors.bg1
         },
-        corner_radius = 6 
+        corner_radius = 6
     },
 
     icons = "sketchybar-app-font:Regular:16.0", -- alternatively available: NerdFont

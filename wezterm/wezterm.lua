@@ -19,11 +19,11 @@ return {
         cursor_fg = "#1B1E28"
     },
     -- font
-    font = wezterm.font("JetBrains Mono", {
+    font = wezterm.font("FiraCode Nerd Font Mono", {
         weight = "Medium"
     }),
     font_size = 15,
-    line_height = 1.8,
+    line_height = 1,
     window_background_opacity = 0.9,
     -- tab bar
     use_fancy_tab_bar = false,

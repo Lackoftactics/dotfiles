@@ -23,6 +23,7 @@ brew install --cask btop
 brew install switchaudio-osx
 brew install nowplaying-cli
 brew install thefuck
+brew install htop
 
 # Terminal
 brew install neovim
@@ -39,7 +40,6 @@ curl -L https://github.com/kvndrsslr/sketchybar-app-font/releases/download/v2.0.
 
 # SbarLua
 (git clone https://github.com/FelixKratz/SbarLua.git /tmp/SbarLua && cd /tmp/SbarLua/ && make install && rm -rf /tmp/SbarLua/)
-
 
 # Start Services
 echo "Starting Services (grant permissions)..."

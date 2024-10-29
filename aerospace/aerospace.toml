@@ -24,7 +24,7 @@ after-startup-command = [
 exec-on-workspace-change = [
   '/bin/bash',
   '-c',
-  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
+  'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE FOCUSED_DISPLAY=$(aerospace list-monitors --focused | awk "{print $1}")',
 ]
 
 # Notify Sketchybar about focuse change
@@ -164,21 +164,61 @@ alt-tab = 'workspace-back-and-forth'
 alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#mode
-alt-shift-semicolon = 'mode service'
+alt-shift-semicolon = [
+  'mode service',
+  'exec-and-forget sketchybar --trigger aerospace_enter_service_mode',
+]
 
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
-esc = ['reload-config', 'mode main']
+esc = [
+  'reload-config',
+  'mode main',
+  'exec-and-forget sketchybar --trigger aerospace_leave_service_mode',
+]
 r = ['flatten-workspace-tree', 'mode main'] # reset layout
 #s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
 f = [
   'layout floating tiling',
   'mode main',
+  'exec-and-forget sketchybar --trigger aerospace_leave_service_mode',
 ] # Toggle between floating and tiling layout
-backspace = ['close-all-windows-but-current', 'mode main']
+backspace = [
+  'close-all-windows-but-current',
+  'mode main',
+  'exec-and-forget sketchybar --trigger aerospace_leave_service_mode',
+]
 
-alt-shift-left = ['join-with left', 'mode main']
-alt-shift-down = ['join-with down', 'mode main']
-alt-shift-up = ['join-with up', 'mode main']
-alt-shift-right = ['join-with right', 'mode main']
+alt-shift-left = [
+  'join-with left',
+  'mode main',
+  'exec-and-forget sketchybar --trigger aerospace_leave_service_mode',
+]
+alt-shift-down = [
+  'join-with down',
+  'mode main',
+  'exec-and-forget sketchybar --trigger aerospace_leave_service_mode',
+]
+alt-shift-up = [
+  'join-with up',
+  'mode main',
+  'exec-and-forget sketchybar --trigger aerospace_leave_service_mode',
+]
+alt-shift-right = [
+  'join-with right',
+  'mode main',
+  'exec-and-forget sketchybar --trigger aerospace_leave_service_mode',
+]
+
+[[on-window-detected]]
+if.app-name-regex-substring = '^wezterm-gui$'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'company.thebrowser.Browser'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.todesktop.230313mzl4w4u92'
+run = 'move-node-to-workspace 3'

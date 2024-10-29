@@ -7,16 +7,17 @@ local apple = sbar.add("item", {
         font = {
             size = 22.0
         },
-        string = icons.apple,
+        string = settings.modes.main.icon,
         padding_right = 8,
-        padding_left = 8
+        padding_left = 8,
+        highlight_color = settings.modes.service.color
     },
     label = {
         drawing = false
     },
     background = {
         color = settings.items.colors.background,
-        border_color = settings.items.colors.unselected,
+        border_color = settings.modes.main.color,
         border_width = 1
     },
 
@@ -25,7 +26,33 @@ local apple = sbar.add("item", {
     click_script = "$CONFIG_DIR/helpers/menus/bin/menus -s 0"
 })
 
--- Padding item required because of bracket
+apple:subscribe("aerospace_enter_service_mode", function(_)
+    apple:set({
+        background = {
+            border_color = settings.modes.service.color,
+            border_width = 3
+        },
+        icon = {
+            highlight = true,
+            string = settings.modes.service.icon
+        }
+    })
+end)
+
+apple:subscribe("aerospace_leave_service_mode", function(_)
+    apple:set({
+        background = {
+            border_color = settings.modes.main.color,
+            border_width = 1
+        },
+        icon = {
+            highlight = false,
+            string = settings.modes.main.icon
+        }
+    })
+end)
+
+-- Padding to the right of the main button
 sbar.add("item", {
     width = 7
 })
