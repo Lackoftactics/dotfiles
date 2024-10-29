@@ -1,0 +1,9 @@
+stripe/
+github-copilot/
+inngest/
+raycast/
+nnn/
+configstore/
+Autodesk/
+__pycache__
+.DS_Store
