@@ -27,29 +27,34 @@ local apple = sbar.add("item", {
 })
 
 apple:subscribe("aerospace_enter_service_mode", function(_)
-    apple:set({
-        background = {
-            border_color = settings.modes.service.color,
-            border_width = 3
-        },
-        icon = {
-            highlight = true,
-            string = settings.modes.service.icon
-        }
-    })
+    sbar.animate("tanh", 10, function()
+        apple:set({
+            background = {
+                border_color = settings.modes.service.color,
+                border_width = 3
+            },
+            icon = {
+                highlight = true,
+                string = settings.modes.service.icon
+            }
+        })
+
+    end)
 end)
 
 apple:subscribe("aerospace_leave_service_mode", function(_)
-    apple:set({
-        background = {
-            border_color = settings.modes.main.color,
-            border_width = 1
-        },
-        icon = {
-            highlight = false,
-            string = settings.modes.main.icon
-        }
-    })
+    sbar.animate("tanh", 10, function()
+        apple:set({
+            background = {
+                border_color = settings.modes.main.color,
+                border_width = 1
+            },
+            icon = {
+                highlight = false,
+                string = settings.modes.main.icon
+            }
+        })
+    end)
 end)
 
 -- Padding to the right of the main button

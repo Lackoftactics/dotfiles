@@ -197,6 +197,32 @@ space_window_observer:subscribe("space_windows_change", function(env)
     end
 end)
 
+space_window_observer:subscribe("aerospace_focus_change", function(env)
+    for i, workspace in ipairs(workspaces) do
+        sbar.exec("aerospace list-windows --workspace " .. i .. " --format '%{app-name}' --json ", function(apps)
+            local icon_line = ""
+            local no_app = true
+            for i, app in ipairs(apps) do
+                no_app = false
+                local app_name = app["app-name"]
+                local lookup = app_icons[app_name]
+                local icon = ((lookup == nil) and app_icons["default"] or lookup)
+                icon_line = icon_line .. " " .. icon
+            end
+
+            if no_app then
+                icon_line = " —"
+            end
+
+            sbar.animate("tanh", 10, function()
+                spaces[i]:set({
+                    label = icon_line
+                })
+            end)
+        end)
+    end
+end)
+
 spaces_indicator:subscribe("swap_menus_and_spaces", function(env)
     local currently_on = spaces_indicator:query().icon.value == icons.switch.on
     spaces_indicator:set({
