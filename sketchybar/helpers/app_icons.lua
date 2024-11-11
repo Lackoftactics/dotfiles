@@ -210,6 +210,8 @@ return {
     ["wezterm-gui"] = ":terminal:",
     ["Steam Helper"] = ":default:",
     ["Benji"] = ":bear:",
+    ["Microsoft Outlook"] = ":microsoft_outlook:",
+    ["ChatGPT"] = ":openai:",
     ["default"] = ":default:"
 }
   
