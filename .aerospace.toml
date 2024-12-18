@@ -1,0 +1,161 @@
+# Start AeroSpace at login
+start-at-login = true
+after-startup-command = [
+     'exec-and-forget /opt/homebrew/opt/borders/bin/borders active_color=0xFFFE1356 inactive_color=0xFF1AFFE1 width=10.0',
+     'exec-and-forget sketchybar'
+]
+
+exec-on-workspace-change = [
+  '/bin/bash',
+  '-c',
+  'sketchybar --trigger aerospace_workspace_changed FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+]
+
+# Mouse follows focus when focused monitor changes
+on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+
+on-focus-changed = [
+   'move-mouse window-lazy-center',
+    'exec-and-forget sketchybar --trigger aerospace_focus_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+]
+accordion-padding = 100
+
+automatically-unhide-macos-hidden-apps = true
+# Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
+enable-normalization-flatten-containers = true
+enable-normalization-opposite-orientation-for-nested-containers = true
+
+# See: https://nikitabobko.github.io/AeroSpace/guide#layouts
+default-root-container-layout = 'tiles'  # tiles|accordion
+default-root-container-orientation = 'auto'
+key-mapping.preset = 'qwerty'
+
+
+
+# Mouse follows focus when focused monitor changes
+# Drop it from your config, if you don't like this behavior
+# See https://nikitabobko.github.io/AeroSpace/guide#on-focus-changed-callbacks
+# See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
+
+# Gaps between windows (inner-*) and between monitor edges (outer-*).
+# Possible values:
+# - Constant:     gaps.outer.top = 8
+# - Per monitor:  gaps.outer.top = [{ monitor.main = 16 }, { monitor."some-pattern" = 32 }, 24]
+#                 In this example, 24 is a default value when there is no match.
+#                 Monitor pattern is the same as for 'workspace-to-monitor-force-assignment'.
+#                 See: https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
+[gaps]
+outer.bottom =        [{monitor.'^built-in retina display$' = 5 }, 5]
+outer.top =        [{monitor.'^built-in retina display$' = 10 }, 38]
+inner.horizontal = 7
+inner.vertical =   7
+outer.left =       5
+outer.right =      5
+
+# See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
+[mode.main.binding]
+
+cmd-ctrl-alt-shift-r = 'reload-config'
+
+# All possible commands: https://nikitabobko.github.io/AeroSpace/commands
+
+# See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
+# You can uncomment the following lines to open up terminal with alt + enter shortcut (like in i3)
+
+# See: https://nikitabobko.github.io/AeroSpace/commands#focus
+ctrl-alt-h = 'focus left'
+ctrl-alt-j  = 'focus down'
+ctrl-alt-k = 'focus up'
+ctrl-alt-l  = 'focus right'
+
+# See: https://nikitabobko.github.io/AeroSpace/commands#move
+alt-shift-h = 'move left'
+alt-shift-j = 'move down'
+alt-shift-k = 'move up'
+alt-shift-l = 'move right' 
+
+alt-tab = 'workspace-back-and-forth'
+
+# See: https://nikitabobko.github.io/AeroSpace/commands#resize
+ctrl-alt-shift-cmd-minus = 'resize smart -50'
+ctrl-alt-shift-cmd-equal = 'resize smart +50'
+
+# See: https://nikitabobko.github.io/AeroSpace/commands#workspace
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+alt-4 = 'workspace 4'
+alt-5 = 'workspace 5'
+alt-6 = 'workspace 6'
+alt-7 = 'workspace 7'
+alt-8 = 'workspace 8'
+alt-9 = 'workspace 9'
+alt-0 = 'workspace 10'
+
+# See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
+ctrl-alt-shift-cmd-1 = [ 'move-node-to-workspace 1', 'workspace 1' ]
+ctrl-alt-shift-cmd-2 = [ 'move-node-to-workspace 2', 'workspace 2' ]
+ctrl-alt-shift-cmd-3 = [ 'move-node-to-workspace 3', 'workspace 3' ]
+ctrl-alt-shift-cmd-4 = [ 'move-node-to-workspace 4', 'workspace 4' ]
+ctrl-alt-shift-cmd-5 = [ 'move-node-to-workspace 5', 'workspace 5' ]
+ctrl-alt-shift-cmd-6 = [ 'move-node-to-workspace 6', 'workspace 6' ]
+ctrl-alt-shift-cmd-7 = [ 'move-node-to-workspace 7', 'workspace 7' ]
+ctrl-alt-shift-cmd-8 = [ 'move-node-to-workspace 8', 'workspace 8' ]
+ctrl-alt-shift-cmd-9 = [ 'move-node-to-workspace 9', 'workspace 9' ]
+ctrl-alt-shift-cmd-0 = [ 'move-node-to-workspace 10', 'workspace 10' ]
+ctrl-alt-shift-cmd-a = [ 'move-node-to-workspace prev', 'workspace prev' ]
+ctrl-alt-shift-cmd-d = [ 'move-node-to-workspace next', 'workspace next' ]
+
+# Join
+
+
+# See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
+ctrl-alt-shift-tab = 'workspace-back-and-forth'
+# See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
+ctrl-alt-shift-cmd-tab = 'move-workspace-to-monitor --wrap-around next'
+
+# See: https://nikitabobko.github.io/AeroSpace/commands#mode
+ctrl-alt-shift-cmd-semicolon = 'mode service'
+
+# Change layout
+alt-slash = 'layout horizontal vertical'
+alt-period = 'layout tiles accordion'
+
+
+# 'service' binding mode declaration.
+# See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
+[mode.service.binding]
+esc = ['reload-config', 'mode main']
+r = ['flatten-workspace-tree', 'mode main'] # reset layout
+#s = ['layout sticky tiling', 'mode main'] # sticky is not yet supported https://github.com/nikitabobko/AeroSpace/issues/2
+f = ['layout floating tiling', 'mode main'] # Toggle between floating and tiling layout
+backspace = ['close-all-windows-but-current', 'mode main']
+
+
+# link different apps to different workspaces
+# See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
+
+[[on-window-detected]]
+if.app-id = 'com.apple.calculator' # Example: Float the Calculator app
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.teams2'
+run = 'move-node-to-workspace 4'
+
+[[on-window-detected]]
+if.app-id = 'com.google.Chrome'
+run = 'move-node-to-workspace 3'
+
+[[on-window-detected]]
+if.app-id = 'com.github.wez.wezterm'
+run = 'move-node-to-workspace 2'
+
+[[on-window-detected]]
+if.app-id = 'com.microsoft.VSCode'
+run = 'move-node-to-workspace 1'
+
+[[on-window-detected]]
+if.app-id = 'com.tinyspeck.slackmacgap'
+run = 'move-node-to-workspace 4'
+
